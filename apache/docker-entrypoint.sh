@@ -2,23 +2,7 @@
 set -e
 
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
-	if [ -n "$MYSQL_PORT_3306_TCP" ]; then
-		if [ -z "$WORDPRESS_DB_HOST" ]; then
-			WORDPRESS_DB_HOST='mysql'
-		else
-			echo >&2 'warning: both WORDPRESS_DB_HOST and MYSQL_PORT_3306_TCP found'
-			echo >&2 "  Connecting to WORDPRESS_DB_HOST ($WORDPRESS_DB_HOST)"
-			echo >&2 '  instead of the linked mysql container'
-		fi
-	fi
-
-	if [ -z "$WORDPRESS_DB_HOST" ]; then
-		echo >&2 'error: missing WORDPRESS_DB_HOST and MYSQL_PORT_3306_TCP environment variables'
-		echo >&2 '  Did you forget to --link some_mysql_container:mysql or set an external db'
-		echo >&2 '  with -e WORDPRESS_DB_HOST=hostname:port?'
-		exit 1
-	fi
-
+	: "${WORDPRESS_DB_HOST:=mysql}"
 	# if we're linked to MySQL and thus have credentials already, let's use them
 	: ${WORDPRESS_DB_USER:=${MYSQL_ENV_MYSQL_USER:-root}}
 	if [ "$WORDPRESS_DB_USER" = 'root' ]; then
@@ -62,6 +46,11 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 	fi
 
 	# TODO handle WordPress upgrades magically in the same way, but only if wp-includes/version.php's $wp_version is less than /usr/src/wordpress/wp-includes/version.php's $wp_version
+
+	# version 4.4.1 decided to switch to windows line endings, that breaks our seds and awks
+	# https://github.com/docker-library/wordpress/issues/116
+	# https://github.com/WordPress/WordPress/commit/1acedc542fba2482bab88ec70d4bea4b997a92e4
+	sed -ri 's/\r\n|\r/\n/g' wp-config*
 
 	if [ ! -e wp-config.php ]; then
 		awk '/^\/\*.*stop editing.*\*\/$/ && c == 0 { c = 1; system("cat") } { print }' wp-config-sample.php > wp-config.php <<'EOPHP'
