@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+echo "Starting script..."
 
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 	: "${WORDPRESS_DB_HOST:=mysql}"
@@ -156,4 +157,5 @@ $mysql->close();
 EOPHP
 fi
 chown -R www-data:www-data /var/www/html
+echo "Script finished."
 exec "$@"
