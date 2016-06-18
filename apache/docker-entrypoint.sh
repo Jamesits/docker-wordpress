@@ -2,6 +2,11 @@
 set -e
 echo "Starting script..."
 
+if [ -n "$WORDPRESS_ROOT" ]; then
+	echo "cd to $WORDPRESS_ROOT"
+	cd $WORDPRESS_ROOT
+fi
+
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 	: "${WORDPRESS_DB_HOST:=mysql}"
 	# if we're linked to MySQL and thus have credentials already, let's use them
