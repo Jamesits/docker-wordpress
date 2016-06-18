@@ -27,9 +27,9 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 
 	if [ -n "$WORDPRESS_FIX_PERMISSION" ]; then
 		echo "Setting permission..."
-		chown -R www-data:www-data .
-		find . -type d -exec chmod 755 {} \;
-		find . -type f -exec chmod 644 {} \;
+		chown -vR www-data:www-data .
+		find . -type d -exec chmod -v 755 {} \;
+		find . -type f -exec chmod -v 644 {} \;
 	fi
 
 	if ! [ -n "$WORDPRESS_NO_INSTALLATION" -o -e index.php -a -e wp-includes/version.php ]; then
