@@ -6,7 +6,7 @@ RUN a2enmod rewrite expires
 RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql mail curl
+	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql curl
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
