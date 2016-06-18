@@ -1,4 +1,4 @@
-FROM php:apache
+FROM php:5-apache
 
 RUN a2enmod rewrite expires
 
