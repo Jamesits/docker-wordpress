@@ -20,7 +20,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		exit 1
 	fi
 
-	if ! [ -z ${WORDPRESS_NO_INSTALLATION+x} -a -e index.php -a -e wp-includes/version.php ]; then
+	if ! [ -n "$WORDPRESS_NO_INSTALLATION" -o -e index.php -a -e wp-includes/version.php ]; then
 		echo >&2 "WordPress not found in $(pwd) - copying now..."
 		if [ "$(ls -A)" ]; then
 			echo >&2 "WARNING: $(pwd) is not empty - press Ctrl+C now if this is an error!"
