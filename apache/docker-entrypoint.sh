@@ -138,6 +138,18 @@ EOPHP
 		set_config 'WP_DEBUG' 1 boolean
 	fi
 
+	if [ -n "$WORDPRESS_PROXY" ]; then
+		set_config 'WP_PROXY_HOST' '$WORDPRESS_PROXY_HOST'
+		set_config 'WP_PROXY_PORT' '$WORDPRESS_PROXY_PORT'
+		if [ "$WORDPRESS_PROXY_USERNAME" ]; then
+			set_config 'WP_PROXY_USERNAME' "$WORDPRESS_PROXY_USERNAME"
+		fi
+		if [ "$WORDPRESS_PROXY_PASSWORD" ]; then
+			set_config 'WP_PROXY_PASSWORD' "$WORDPRESS_PROXY_PASSWORD"
+		fi
+		set_config 'WP_PROXY_BYPASS_HOSTS' "${$WORDPRESS_PROXY_BYPASS_HOSTS:-localhost}"
+	fi
+
 	TERM=dumb php -- "$WORDPRESS_DB_HOST" "$WORDPRESS_DB_USER" "$WORDPRESS_DB_PASSWORD" "$WORDPRESS_DB_NAME" <<'EOPHP'
 <?php
 // database might not exist, so let's try creating it (just to be safe)
