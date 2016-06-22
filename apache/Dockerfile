@@ -3,7 +3,7 @@ FROM php:apache
 RUN a2enmod rewrite expires headers
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev libcurl4-gnutls-dev \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev libcurl4-gnutls-dev less \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql curl
