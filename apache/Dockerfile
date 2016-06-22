@@ -37,6 +37,14 @@ RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VER
 	&& tar -xzf wordpress.tar.gz -C /usr/src/ \
 	&& rm wordpress.tar.gz \
 	&& chown -R www-data:www-data /usr/src/wordpress
+	
+# install wp-cli from https://wp-cli.org/
+RUN curl -SLO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& mkdir -p /usr/src/wp-cli \
+	&& mv wp-cli.phar /usr/src/wp-cli/ \
+	&& chmod +x /usr/src/wp-cli/wp-cli.phar \
+	&& ln -s /usr/src/wp-cli/wp-cli.phar /usr/local/bin/wp \
+	&& wp --info
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
