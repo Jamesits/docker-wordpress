@@ -42,8 +42,12 @@ RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VER
 RUN curl -SLO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& mkdir -p /usr/src/wp-cli \
 	&& mv wp-cli.phar /usr/src/wp-cli/ \
-	&& chmod +x /usr/src/wp-cli/wp-cli.phar \
-	&& ln -s /usr/src/wp-cli/wp-cli.phar /usr/local/bin/wp \
+	&& chmod +x /usr/src/wp-cli/wp-cli.phar
+RUN { \
+		echo '#!/bin/bash'; \
+		echo 'exec php /usr/src/wp-cli/wp-cli.phar --allow-root $@'; \
+	} > /usr/bin/wp \
+	&& chmod +x /usr/bin/wp \
 	&& wp --info
 
 COPY docker-entrypoint.sh /entrypoint.sh
