@@ -45,6 +45,7 @@ RUN curl -SLO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-c
 	&& chmod +x /usr/src/wp-cli/wp-cli.phar
 RUN { \
 		echo '#!/bin/bash'; \
+		echo 'cd ${WORDPRESS_ROOT:-/var/www/html/}'; \
 		echo 'exec php /usr/src/wp-cli/wp-cli.phar --allow-root $@'; \
 	} > /usr/bin/wp \
 	&& chmod +x /usr/bin/wp \
