@@ -3,7 +3,7 @@ FROM php:apache
 RUN a2enmod rewrite expires headers
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev libcurl4-gnutls-dev less \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev libcurl4-gnutls-dev less sudo \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql curl
@@ -46,7 +46,7 @@ RUN curl -SLO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-c
 RUN { \
 		echo '#!/bin/bash'; \
 		echo 'cd ${WORDPRESS_ROOT:-/var/www/html/}'; \
-		echo 'exec php /usr/src/wp-cli/wp-cli.phar --allow-root $@'; \
+		echo 'exec sudo -u www-data -s -- php /usr/src/wp-cli/wp-cli.phar $@'; \
 	} > /usr/bin/wp \
 	&& chmod +x /usr/bin/wp \
 	&& wp --info
