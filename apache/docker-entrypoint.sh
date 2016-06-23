@@ -181,5 +181,11 @@ $mysql->close();
 EOPHP
 fi
 
+if [ -n "$WORDPRESS_UPDATE" ]; then
+	echo "Updating WordPress..."
+	wp --skip-plugins core update
+	wp --skip-plugins plugin update --all
+fi
+
 echo "Script finished."
 exec "$@"
