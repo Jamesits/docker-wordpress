@@ -1,6 +1,6 @@
 FROM php:apache
 
-RUN a2enmod rewrite expires headers
+RUN a2enmod rewrite expires headers substitute
 
 # install the PHP extensions we need
 RUN apt-get update && apt-get upgrade -y && apt-get install -y libpng12-dev libjpeg-dev zlib1g-dev libcurl4-gnutls-dev less sudo \
