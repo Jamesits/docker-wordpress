@@ -21,9 +21,9 @@ RUN { \
 	
 RUN { \
 		echo 'file_uploads=On'; \
-		echo 'upload_max_filesize=64M'; \
-		echo 'post_max_size=64M'; \
-		echo 'max_execution_time=600'; \
+		echo 'upload_max_filesize=256M'; \
+		echo 'post_max_size=256M'; \
+		echo 'max_execution_time=1200'; \
 	} > /usr/local/etc/php/conf.d/php-recommended.ini
 
 VOLUME /var/www/html
