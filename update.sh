@@ -6,7 +6,7 @@ current="$(curl -sSL 'http://api.wordpress.org/core/version-check/1.7/' | sed -r
 sha1="$(curl -sSL "https://wordpress.org/wordpress-$current.tar.gz.sha1")"
 
 travisEnv=
-for variant in apache fpm; do
+for variant in apache; do
 	(
 		set -x
 
