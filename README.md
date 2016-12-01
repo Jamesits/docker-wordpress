@@ -26,6 +26,7 @@ Please mount `/var/www/html` as a volume.
 * `WORDPRESS_NO_INSTALLATION`: explicitly skip WordPress detection and auto-installation. Useful if you want a clean LAMP environment. 
 * `WORDPRESS_UPDATE`: set to upgrade WordPress and all plugins on container start. 
 * `WORDPRESS_BEHIND_REVERSE_PROXY`: Set to use Apache2's mod_remoteip to parse correct ip if behind a reverse proxy. Also set `WORDPRESS_REVERSE_PROXY_HEADER` to your reverse proxy's IP header (defaults to `X-Forwarded-For`) and `WORDPRESS_REVERSE_PROXY_ADDR` to your reverse proxy's IP address (or CIDR or domain).
+
 ==============
 
 This is the Git repo of the Docker [official image](https://docs.docker.com/docker-hub/official_repos/) for [wordpress](https://registry.hub.docker.com/_/wordpress/). See [the Docker Hub page](https://registry.hub.docker.com/_/wordpress/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
