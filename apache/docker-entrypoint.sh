@@ -8,7 +8,7 @@ if [ -n "$WORDPRESS_ROOT" ]; then
 fi
 
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
-	: "${WORDPRESS_DB_HOST:=mysql}"
+	: ${WORDPRESS_DB_HOST:=mysql}
 	# if we're linked to MySQL and thus have credentials already, let's use them
 	: ${WORDPRESS_DB_USER:=${MYSQL_ENV_MYSQL_USER:-root}}
 	if [ "$WORDPRESS_DB_USER" = 'root' ]; then
@@ -183,6 +183,17 @@ if (!$mysql->query('CREATE DATABASE IF NOT EXISTS `' . $mysql->real_escape_strin
 }
 $mysql->close();
 EOPHP
+fi
+
+if [ -n "$WORDPRESS_BEHIND_REVERSE_PROXY" ]; then
+	: ${WORDPRESS_REVERSE_PROXY_HEADER:=X-Forwarded-For}
+	: ${WORDPRESS_REVERSE_PROXY_ADDR:=192.168.0.0/24}
+	cat > /etc/apache2/conf-available/remoteip.conf <<-'EOF'
+		RemoteIPHeader ${WORDPRESS_REVERSE_PROXY_HEADER}
+		RemoteIPInternalProxy ${WORDPRESS_REVERSE_PROXY_ADDR}
+	EOF
+	a2enconf remoteip
+	sed -i "s/%h/%a/g" /etc/apache2/apache2.conf
 fi
 
 if [ -n "$WORDPRESS_UPDATE" ]; then
