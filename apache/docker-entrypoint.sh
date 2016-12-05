@@ -1,5 +1,28 @@
 #!/bin/bash
-set -e
+set -eu
+
+# usage: file_env VAR [DEFAULT]
+#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
+# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
+#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+file_env() {
+	local var="$1"
+	local fileVar="${var}_FILE"
+	local def="${2:-}"
+	if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+		echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+		exit 1
+	fi
+	local val="$def"
+	if [ "${!var:-}" ]; then
+		val="${!var}"
+	elif [ "${!fileVar:-}" ]; then
+		val="$(< "${!fileVar}")"
+	fi
+	export "$var"="$val"
+	unset "$fileVar"
+}
+
 echo "Starting script..."
 
 if [ -n "$WORDPRESS_ROOT" ]; then
@@ -8,14 +31,15 @@ if [ -n "$WORDPRESS_ROOT" ]; then
 fi
 
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
-	: ${WORDPRESS_DB_HOST:=mysql}
+	file_env 'WORDPRESS_DB_HOST' 'mysql'
 	# if we're linked to MySQL and thus have credentials already, let's use them
-	: ${WORDPRESS_DB_USER:=${MYSQL_ENV_MYSQL_USER:-root}}
+	file_env 'WORDPRESS_DB_USER' "${MYSQL_ENV_MYSQL_USER:-root}"
 	if [ "$WORDPRESS_DB_USER" = 'root' ]; then
-		: ${WORDPRESS_DB_PASSWORD:=$MYSQL_ENV_MYSQL_ROOT_PASSWORD}
+		file_env 'WORDPRESS_DB_PASSWORD' "${MYSQL_ENV_MYSQL_ROOT_PASSWORD:-}"
+	else
+		file_env 'WORDPRESS_DB_PASSWORD' "${MYSQL_ENV_MYSQL_PASSWORD:-}"
 	fi
-	: ${WORDPRESS_DB_PASSWORD:=$MYSQL_ENV_MYSQL_PASSWORD}
-	: ${WORDPRESS_DB_NAME:=${MYSQL_ENV_MYSQL_DATABASE:-wordpress}}
+	file_env 'WORDPRESS_DB_NAME' "${MYSQL_ENV_MYSQL_DATABASE:-wordpress}"
 
 	if [ -z "$WORDPRESS_DB_PASSWORD" ]; then
 		echo >&2 'error: missing required WORDPRESS_DB_PASSWORD environment variable'
@@ -130,6 +154,7 @@ EOPHP
 		fi
 	done
 
+	file_env 'WORDPRESS_TABLE_PREFIX'
 	if [ "$WORDPRESS_TABLE_PREFIX" ]; then
 		set_config '$table_prefix' "$WORDPRESS_TABLE_PREFIX"
 	fi
