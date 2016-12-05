@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -e
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
