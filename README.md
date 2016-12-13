@@ -28,8 +28,8 @@ Please mount `/var/www/html` as a volume.
 * `WORDPRESS_BEHIND_REVERSE_PROXY`: Set to use Apache2's mod_remoteip to parse correct ip if behind a reverse proxy. Also set `WORDPRESS_REVERSE_PROXY_HEADER` to your reverse proxy's IP header (defaults to `X-Forwarded-Proto`) and `WORDPRESS_REVERSE_PROXY_ADDR` to your reverse proxy's IP address (or CIDR or domain).
 
 ## FAQ
-### Redirect Loop behind HTTPS proxy
-Add the following code to the top of `/wp-config.php` right below `<?php` tag:
+### Behind HTTPS proxy
+You may run into problems like WordPress loading all assets over HTTP or redirect loop in `/wp-login.php`. To solve this, add the following code to the top of `/wp-config.php` right below `<?php` tag:
 ```php
 // enable HTTPS detection behind proxy
 define('FORCE_SSL_ADMIN', true);
@@ -39,6 +39,7 @@ define('FORCE_SSL_ADMIN', true);
 if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
        $_SERVER['HTTPS']='on';
 ```
+See [Administration Over SSL](https://codex.wordpress.org/Administration_Over_SSL) for more information on this.
 
 ==============
 
