@@ -23,9 +23,22 @@ Please mount `/var/www/html` as a volume.
 * `WORDPRESS_ROOT`: the path you want to install WordPress (if not exist) to. Defaults and relative to `/var/www/html`.
 * `WORDPRESS_DB_HOST`, `WORDPRESS_DB_USER`, `WORDPRESS_DB_PASSWORD`: MySQL things.
 * `WORDPRESS_FIX_PERMISSION`: set to chmod everything to a correct permission. Needed if you are migrating or some directory is not able to be written by WordPress. May take >6hrs on a large site. Don't set it on every container start.
-* `WORDPRESS_NO_INSTALLATION`: explicitly skip WordPress detection and auto-installation. Useful if you want a clean LAMP environment. 
-* `WORDPRESS_UPDATE`: set to upgrade WordPress and all plugins on container start. 
-* `WORDPRESS_BEHIND_REVERSE_PROXY`: Set to use Apache2's mod_remoteip to parse correct ip if behind a reverse proxy. Also set `WORDPRESS_REVERSE_PROXY_HEADER` to your reverse proxy's IP header (defaults to `X-Forwarded-For`) and `WORDPRESS_REVERSE_PROXY_ADDR` to your reverse proxy's IP address (or CIDR or domain).
+* `WORDPRESS_NO_INSTALLATION`: explicitly skip WordPress detection and auto-installation. Useful if you want a clean LAMP environment.
+* `WORDPRESS_UPDATE`: set to upgrade WordPress and all plugins on container start.
+* `WORDPRESS_BEHIND_REVERSE_PROXY`: Set to use Apache2's mod_remoteip to parse correct ip if behind a reverse proxy. Also set `WORDPRESS_REVERSE_PROXY_HEADER` to your reverse proxy's IP header (defaults to `X-Forwarded-Proto`) and `WORDPRESS_REVERSE_PROXY_ADDR` to your reverse proxy's IP address (or CIDR or domain).
+
+## FAQ
+### Redirect Loop behind HTTPS proxy
+Add the following code to the top of `/wp-config.php` right below `<?php` tag:
+```php
+// enable HTTPS detection behind proxy
+define('FORCE_SSL_ADMIN', true);
+// in some setups HTTP_X_FORWARDED_PROTO might contain
+// a comma-separated list e.g. http,https
+// so check for https existence
+if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
+       $_SERVER['HTTPS']='on';
+```
 
 ==============
 

@@ -211,7 +211,7 @@ EOPHP
 fi
 
 if [ -n "$WORDPRESS_BEHIND_REVERSE_PROXY" ]; then
-	: ${WORDPRESS_REVERSE_PROXY_HEADER:=X-Forwarded-For}
+	: ${WORDPRESS_REVERSE_PROXY_HEADER:=X-Forwarded-Proto}
 	: ${WORDPRESS_REVERSE_PROXY_ADDR:=192.168.0.0/24}
 	cat > /etc/apache2/conf-available/remoteip.conf <<-'EOF'
 		RemoteIPHeader ${WORDPRESS_REVERSE_PROXY_HEADER}
