@@ -1,0 +1,14 @@
+version: "2.0"
+build:
+    image:
+        dockerfile_path: Dockerfile
+        build_dir: /
+        cache: false
+test:
+    image: Jamesits/wordpress:latest
+    services:
+        - mysql
+    env:
+        - MYENV = "hello"
+    script:
+        - curl -vL localhost
