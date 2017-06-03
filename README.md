@@ -41,6 +41,13 @@ if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
 ```
 See [Administration Over SSL](https://codex.wordpress.org/Administration_Over_SSL) for more information on this.
 
+### Migrating from Nginx installation
+If you cannot visit any static links (they should be 404), please add a `.htaccess` file to the sote root using content from [htaccess](https://codex.wordpress.org/htaccess).
+
+If you use Wordfence WAF or any other security plugin, you may need to redo setup of them. 
+
+Everything else should work. 
+
 ==============
 
 This is the Git repo of the Docker [official image](https://docs.docker.com/docker-hub/official_repos/) for [wordpress](https://registry.hub.docker.com/_/wordpress/). See [the Docker Hub page](https://registry.hub.docker.com/_/wordpress/) for the full readme on how to use this Docker image and for information regarding contributing and issues.
