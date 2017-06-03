@@ -5,7 +5,7 @@ build:
         build_dir: /
         cache: false
 test:
-    image: Jamesits/wordpress:latest
+    image: jamesits/wordpress:latest
     services:
         - mysql
     env:
