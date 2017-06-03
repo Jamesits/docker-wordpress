@@ -4,11 +4,3 @@ build:
         dockerfile_path: Dockerfile
         build_dir: /
         cache: false
-test:
-    image: jamesits/wordpress:latest
-    services:
-        - mysql
-    env:
-        - MYENV = "hello"
-    script:
-        - curl -vL localhost
