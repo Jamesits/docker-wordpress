@@ -42,7 +42,7 @@ if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
 See [Administration Over SSL](https://codex.wordpress.org/Administration_Over_SSL) for more information on this.
 
 ### Migrating from Nginx installation
-If you cannot visit any static links (they should be 404), please add a `.htaccess` file to the sote root using content from [htaccess](https://codex.wordpress.org/htaccess).
+If you cannot visit any static links (they should be 404), please add a `.htaccess` file to the site root using content from [htaccess](https://codex.wordpress.org/htaccess).
 
 If you use Wordfence WAF or any other security plugin, you may need to redo setup of them. 
 
