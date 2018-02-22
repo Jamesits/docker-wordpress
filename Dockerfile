@@ -10,7 +10,7 @@ RUN apt-get update \
 	&& ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
 	&& ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql curl mbstring ldap mcrypt
+	&& docker-php-ext-install gd mysqli opcache zip bcmath pdo pdo_mysql curl mbstring ldap
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
 RUN { \
