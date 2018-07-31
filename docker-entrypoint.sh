@@ -252,6 +252,9 @@ EOPHP
 	done
 fi
 
+# we rely on unbound variables as switches
+set +u
+
 if [ -n "$WORDPRESS_BEHIND_REVERSE_PROXY" ]; then
 	: ${WORDPRESS_REVERSE_PROXY_HEADER:=X-Forwarded-Proto}
 	: ${WORDPRESS_REVERSE_PROXY_ADDR:=192.168.0.0/24}
