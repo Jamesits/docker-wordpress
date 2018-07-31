@@ -3,8 +3,8 @@ LABEL maintainer="docker@public.swineson.me"
 
 VOLUME /var/www/html
 
-ENV WORDPRESS_VERSION 4.9.4
-ENV WORDPRESS_SHA1 0e630bf940fd586b10e099cd9195b3e825fb194c
+ARG WORDPRESS_VERSION=4.9.7
+ARG WORDPRESS_SHA1=7bf349133750618e388e7a447bc9cdc405967b7d
 
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz \
@@ -27,7 +27,8 @@ RUN { \
 	&& wp --info
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
+# backwards compat
+RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh
 
 # ENTRYPOINT resets CMD
 ENTRYPOINT ["docker-entrypoint.sh"]
