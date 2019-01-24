@@ -3,8 +3,8 @@ LABEL maintainer="docker@public.swineson.me"
 
 VOLUME /var/www/html
 
-ARG WORDPRESS_VERSION=4.9.7
-ARG WORDPRESS_SHA1=7bf349133750618e388e7a447bc9cdc405967b7d
+ARG WORDPRESS_VERSION=5.0.3
+ARG WORDPRESS_SHA1=F9A4B482288B5BE7A71E9F3DC9B5B0C1F881102B
 
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz \
